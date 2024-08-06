@@ -1,10 +1,11 @@
+
 'use client';
 
 import React, { useState, MouseEvent } from 'react';
 import { 
   AppBar, Toolbar, Typography, IconButton, InputBase, Box, Button, 
   Menu, MenuItem, ListItemIcon, ListItemText, Fade, Card, CardContent, 
-  CardMedia, Grid, Container, Divider
+  CardMedia, Grid, Container, Divider, Paper, useTheme, useMediaQuery
 } from '@mui/material';
 import { 
   ShoppingCart, AccountCircle, Search, KeyboardArrowDown, 
@@ -16,6 +17,7 @@ import MedicationIcon from '@mui/icons-material/Medication';
 const primaryColor = '#10847E';
 const secondaryColor = '#F9F9F9';
 const accentColor = '#14A098';
+const cardBackgroundColor = '#E6F3F2'; // Light version of #118e88
 
 interface SubMenuItem {
   label: string;
@@ -49,8 +51,6 @@ const menuItems: MenuItemType[] = [
   },
   { label: 'Lab Tests', icon: <Science /> },
   { label: 'Healthcare', icon: <Healing /> },
-  { label: 'Health Blog', icon: <Book /> },
-  { label: 'PLUS', icon: <Star /> },
   { label: 'Offers', icon: <LocalOffer /> }
 ];
 
@@ -99,6 +99,8 @@ const NestedMenuItem: React.FC<NestedMenuItemProps> = ({ item, handleClose }) =>
 
 const PharmaStoreHeader: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -117,6 +119,7 @@ const PharmaStoreHeader: React.FC = () => {
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Button 
                 variant="contained" 
+                size="small"
                 sx={{ 
                   backgroundColor: '#FFFFFF', 
                   color: primaryColor, 
@@ -126,10 +129,11 @@ const PharmaStoreHeader: React.FC = () => {
                 }}
                 startIcon={<Apple sx={{ color: primaryColor }} />}
               >
-                iOS App
+                iOS
               </Button>
               <Button 
                 variant="contained" 
+                size="small"
                 sx={{ 
                   backgroundColor: '#FFFFFF', 
                   color: primaryColor, 
@@ -140,7 +144,7 @@ const PharmaStoreHeader: React.FC = () => {
                 }}
                 startIcon={<Android sx={{ color: primaryColor }} />}
               >
-                Android App
+                Android
               </Button>
             </Box>
           </Toolbar>
@@ -154,23 +158,22 @@ const PharmaStoreHeader: React.FC = () => {
             </Typography>
           </Box>
 
-          <Box sx={{ flexGrow: 1, position: 'relative' }}>
-            <InputBase
-              placeholder="Search for medicines and health products"
-              sx={{
-                width: '100%',
-                padding: '8px 12px',
-                paddingRight: '40px',
-                backgroundColor: '#F5F5F5',
-                borderRadius: '4px',
-                '&:hover': { backgroundColor: '#EEEEEE' },
-              }}
-            />
-            <IconButton sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
-              <Search sx={{ color: primaryColor }} />
-            </IconButton>
+          <Box sx={{ flexGrow: 1, position: 'relative', mx: 2 }}>
+            <Paper
+              component="form"
+              sx={{ display: 'flex', alignItems: 'center', width: '100%', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+            >
+              <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Search for medicines and health products"
+                inputProps={{ 'aria-label': 'search medicines' }}
+              />
+              <IconButton type="submit" sx={{ p: '10px', color: primaryColor }} aria-label="search">
+                <Search />
+              </IconButton>
+            </Paper>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 4 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton sx={{ color: primaryColor }}>
               <ShoppingCart />
             </IconButton>
@@ -180,7 +183,7 @@ const PharmaStoreHeader: React.FC = () => {
           </Box>
         </Toolbar>
 
-        <Toolbar sx={{ borderTop: '1px solid #EEEEEE', justifyContent: 'flex-start' }}>
+        <Toolbar sx={{ borderTop: '1px solid #EEEEEE', justifyContent: 'flex-start', overflowX: 'auto' }}>
           {menuItems.map((item, index) => (
             <Button
               key={index}
@@ -188,6 +191,7 @@ const PharmaStoreHeader: React.FC = () => {
               sx={{ 
                 color: primaryColor, 
                 mx: 1,
+                whiteSpace: 'nowrap',
                 '&:hover': { backgroundColor: 'rgba(16, 132, 126, 0.1)' },
               }}
               endIcon={item.submenu && <KeyboardArrowDown />}
@@ -227,29 +231,30 @@ const PharmaStoreHeader: React.FC = () => {
               <Typography variant="h6" sx={{ mb: 4 }}>
                 Your one-stop shop for all your healthcare needs
               </Typography>
-              <Box sx={{ display: 'flex', width: '100%', mb: 2 }}>
+              <Paper
+                component="form"
+                sx={{ 
+                  p: '2px 4px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  width: '100%',
+                  mb: 2,
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                }}
+              >
                 <InputBase
+                  sx={{ ml: 1, flex: 1 }}
                   placeholder="Search for medicines and health products"
-                  sx={{
-                    width: '100%',
-                    padding: '12px',
-                    backgroundColor: '#F5F5F5',
-                    borderRadius: '4px 0 0 4px',
-                    '&:hover': { backgroundColor: '#EEEEEE' },
-                  }}
+                  inputProps={{ 'aria-label': 'search medicines' }}
                 />
                 <Button 
-                  variant="contained" 
-                  sx={{ 
-                    background:'#1F9C99',
-                    color:'#eef4ff',
-                    borderRadius: '0 4px 4px 0',
-                    '&:hover': { backgroundColor: '#eef4ff' ,color:'#118E88'} 
-                  }}
+                  type="submit" 
+                  sx={{ p: '10px', color: '#FFFFFF', backgroundColor: accentColor, '&:hover': { backgroundColor: '#0B5D5A' } }} 
+                  aria-label="search"
                 >
                   Search
                 </Button>
-              </Box>
+              </Paper>
               <Button 
                 variant="contained" 
                 sx={{ 
@@ -265,7 +270,17 @@ const PharmaStoreHeader: React.FC = () => {
               </Button>
             </Grid>
             <Grid item xs={12} md={6}>
-              <img src="https://source.unsplash.com/random/800x600?healthcare" alt="Healthcare" style={{ width: '100%', borderRadius: '8px' }} />
+              <Box
+                component="img"
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                }}
+                alt="Healthcare"
+                src="https://source.unsplash.com/random/800x600?healthcare"
+              />
             </Grid>
           </Grid>
         </Container>
@@ -278,7 +293,7 @@ const PharmaStoreHeader: React.FC = () => {
             Featured Products
           </Typography>
           <Grid container spacing={3}>
-            {['Featured Product 1', 'Featured Product 2'].map((title, index) => (
+            {['Featured Product 1', 'Featured Product 2', 'Featured Product 3'].map((title, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <Card sx={{ 
                   display: 'flex', 
@@ -286,25 +301,27 @@ const PharmaStoreHeader: React.FC = () => {
                   height: 400, 
                   boxShadow: '0 4px 8px rgba(0,0,0,0.1)', 
                   transition: '0.3s', 
+                  backgroundColor: cardBackgroundColor,
                   '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 6px 12px rgba(0,0,0,0.2)' } 
                 }}>
                   <CardMedia
                     component="img"
-                    sx={{ height: 200 }}
-                    image={`https://source.unsplash.com/random/200x200?health&sig=${index}`}
+                    sx={{ height: 200, objectFit: 'cover' }}
+                    image={`https://source.unsplash.com/random/400x200?health&sig=${index}`}
                     alt={title}
                   />
                   <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="h5" variant="h5">
+                    <Typography component="h5" variant="h5" gutterBottom>
                       {title}
                     </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Description of the featured product
+                    <Typography variant="body2" color="textSecondary">
+                      Description of the featured product. This product is designed to improve your health and well-being.
                     </Typography>
                   </CardContent>
-                  <Box sx={{ display: 'flex', justifyContent: 'center', pb: 2 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
+                    <Typography variant="h6" color="primary">$19.99</Typography>
                     <Button variant="contained" sx={{ backgroundColor: primaryColor, '&:hover': { backgroundColor: '#0B5D5A' } }}>
-                      Learn More
+                      Add to Cart
                     </Button>
                   </Box>
                 </Card>
@@ -329,6 +346,7 @@ const PharmaStoreHeader: React.FC = () => {
                   height: 350, 
                   boxShadow: '0 4px 8px rgba(0,0,0,0.1)', 
                   transition: '0.3s', 
+                  backgroundColor: cardBackgroundColor,
                   '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 6px 12px rgba(0,0,0,0.2)' } 
                 }}>
                   <CardMedia
@@ -340,7 +358,7 @@ const PharmaStoreHeader: React.FC = () => {
                   <CardContent>
                     <Typography variant="h6" gutterBottom>{title}</Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Short description of the blog post.
+                      Short description of the blog post. Learn about the latest health trends and medical advancements.
                     </Typography>
                   </CardContent>
                   <Button variant="outlined" sx={{ m: 2, color: primaryColor, borderColor: primaryColor }}>
@@ -351,71 +369,149 @@ const PharmaStoreHeader: React.FC = () => {
             ))}
           </Grid>
         </Container>
-      </Box>
+        </Box>
 
-      {/* Bestseller Section */}
-      <Box sx={{ py: 8, px: 4 }}>
-        <Container maxWidth="lg">
-          <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold', color: primaryColor }}>
-            Bestsellers
-          </Typography>
-          <Grid container spacing={3}>
-            {['Bestseller 1', 'Bestseller 2', 'Bestseller 3'].map((title, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card sx={{ 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  height: 350, 
-                  boxShadow: '0 4px 8px rgba(0,0,0,0.1)', 
-                  transition: '0.3s', 
-                  '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 6px 12px rgba(0,0,0,0.2)' } 
-                }}>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={`https://source.unsplash.com/random/400x200?bestseller&sig=${index}`}
-                    alt={title}
-                  />
-                  <CardContent>
-                    <Typography variant="h6" gutterBottom>{title}</Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      Short description of the bestseller product.
-                    </Typography>
-                  </CardContent>
-                  <Button variant="contained" sx={{ m: 2, backgroundColor: primaryColor, '&:hover': { backgroundColor: '#0B5D5A' } }}>
-                    Buy Now
-                  </Button>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+{/* Bestseller Section */}
+<Box sx={{ py: 8, px: 4 }}>
+  <Container maxWidth="lg">
+    <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold', color: primaryColor }}>
+      Bestsellers
+    </Typography>
+    <Grid container spacing={3}>
+      {['Bestseller 1', 'Bestseller 2', 'Bestseller 3', 'Bestseller 4'].map((title, index) => (
+        <Grid item xs={12} sm={6} md={3} key={index}>
+          <Card sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            height: 350, 
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)', 
+            transition: '0.3s', 
+            backgroundColor: cardBackgroundColor,
+            '&:hover': { transform: 'translateY(-5px)', boxShadow: '0 6px 12px rgba(0,0,0,0.2)' } 
+          }}>
+            <CardMedia
+              component="img"
+              height="140"
+              image={`https://source.unsplash.com/random/400x200?medicine&sig=${index}`}
+              alt={title}
+            />
+            <CardContent>
+              <Typography variant="h6" gutterBottom>{title}</Typography>
+              <Typography variant="body2" color="textSecondary">
+                Short description of the bestseller product. Trusted by thousands of customers.
+              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
+                <Typography variant="h6" color="primary">$24.99</Typography>
+                <Typography variant="body2" color="textSecondary">⭐⭐⭐⭐⭐ (250)</Typography>
+              </Box>
+            </CardContent>
+            <Button variant="contained" sx={{ m: 2, backgroundColor: primaryColor, '&:hover': { backgroundColor: '#0B5D5A' } }}>
+              Add to Cart
+            </Button>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  </Container>
+</Box>
 
-      {/* Footer */}
-      <Box sx={{ backgroundColor: primaryColor, color: 'white', py: 6 }}>
+{/* Newsletter Section */}
+<Box sx={{ py: 8, px: 4, backgroundColor: secondaryColor }}>
+  <Container maxWidth="md">
+    <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold', color: primaryColor, textAlign: 'center' }}>
+      Subscribe to Our Newsletter
+    </Typography>
+    <Typography variant="body1" sx={{ mb: 4, textAlign: 'center' }}>
+      Stay updated with our latest offers, health tips, and product launches.
+    </Typography>
+    <Box component="form" sx={{ display: 'flex', justifyContent: 'center' }}>
+      <InputBase
+        sx={{ 
+          mr: 1, 
+          flex: 1, 
+          maxWidth: '400px', 
+          bgcolor: 'white', 
+          borderRadius: '4px', 
+          p: '10px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}
+        placeholder="Enter your email address"
+        inputProps={{ 'aria-label': 'subscribe to newsletter' }}
+      />
+      <Button 
+        variant="contained" 
+        sx={{ 
+          backgroundColor: primaryColor, 
+          '&:hover': { backgroundColor: '#0B5D5A' },
+          borderRadius: '4px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}
+      >
+        Subscribe
+      </Button>
+    </Box>
+  </Container>
+</Box>
+
+{/* Footer */}
+<Box sx={{ backgroundColor: primaryColor, color: 'white', py: 6 }}>
   <Container maxWidth="lg">
     <Grid container spacing={4}>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <Typography variant="h6" gutterBottom>About MediMart</Typography>
         <Typography variant="body2">
           MediMart is your trusted online pharmacy, providing high-quality medicines and healthcare products.
         </Typography>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <Typography variant="h6" gutterBottom>Quick Links</Typography>
         <Typography variant="body2" component="p" gutterBottom><a href="/privacy-policy" style={{ color: 'white', textDecoration: 'none' }}>Privacy Policy</a></Typography>
         <Typography variant="body2" component="p" gutterBottom><a href="/return-policy" style={{ color: 'white', textDecoration: 'none' }}>Return Policy</a></Typography>
-        <Typography variant="body2" component="p" gutterBottom><a href="/mission" style={{ color: 'white', textDecoration: 'none' }}>Mission</a></Typography>
-        <Typography variant="body2" component="p"><a href="/values" style={{ color: 'white', textDecoration: 'none' }}>Values</a></Typography>
+        <Typography variant="body2" component="p" gutterBottom><a href="/mission" style={{ color: 'white', textDecoration: 'none' }}>Our Mission</a></Typography>
+        <Typography variant="body2" component="p"><a href="/values" style={{ color: 'white', textDecoration: 'none' }}>Our Values</a></Typography>
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} sm={6} md={3}>
+        <Typography variant="h6" gutterBottom>Customer Service</Typography>
+        <Typography variant="body2" component="p" gutterBottom><a href="/faq" style={{ color: 'white', textDecoration: 'none' }}>FAQ</a></Typography>
+        <Typography variant="body2" component="p" gutterBottom><a href="/shipping" style={{ color: 'white', textDecoration: 'none' }}>Shipping Information</a></Typography>
+        <Typography variant="body2" component="p"><a href="/contact" style={{ color: 'white', textDecoration: 'none' }}>Contact Us</a></Typography>
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
         <Typography variant="h6" gutterBottom>Connect with Us</Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
           <IconButton sx={{ color: 'white' }}><Facebook /></IconButton>
           <IconButton sx={{ color: 'white' }}><Twitter /></IconButton>
           <IconButton sx={{ color: 'white' }}><Instagram /></IconButton>
           <IconButton sx={{ color: 'white' }}><LinkedIn /></IconButton>
+        </Box>
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Download our mobile app:
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, mt: 1 }}>
+          <Button 
+            variant="outlined" 
+            size="small"
+            sx={{ 
+              color: 'white', 
+              borderColor: 'white',
+              '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } 
+            }}
+            startIcon={<Apple />}
+          >
+            iOS
+          </Button>
+          <Button 
+            variant="outlined" 
+            size="small"
+            sx={{ 
+              color: 'white', 
+              borderColor: 'white',
+              '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } 
+            }}
+            startIcon={<Android />}
+          >
+            Android
+          </Button>
         </Box>
       </Grid>
     </Grid>
@@ -425,8 +521,8 @@ const PharmaStoreHeader: React.FC = () => {
     </Typography>
   </Container>
 </Box>
-    </>
-  );
+</>
+);
 };
 
 export default PharmaStoreHeader;
