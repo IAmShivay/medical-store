@@ -36,8 +36,6 @@ import {
   KeyboardArrowRight,
   Science,
   Healing,
-  Book,
-  Star,
   LocalOffer,
   Facebook,
   Twitter,
@@ -45,6 +43,7 @@ import {
   LinkedIn,
   Apple,
   Android,
+  KeyboardArrowUp,
   KeyboardArrowDown,
 } from "@mui/icons-material";
 import MedicationIcon from "@mui/icons-material/Medication";
@@ -142,6 +141,7 @@ const PharmaStoreHeader: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
+  const [expandedIndex, setExpandedIndex] = useState(null);
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -155,7 +155,9 @@ const PharmaStoreHeader: React.FC = () => {
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
-
+  const handleToggle = (index: any) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
   return (
     <>
       <AppBar
@@ -236,17 +238,22 @@ const PharmaStoreHeader: React.FC = () => {
                 }}
               >
                 <InputBase
-                  sx={{  flex: 1, mr:1}}
+                  sx={{ flex: 1, mr: 1 }}
                   placeholder="Search for medicines and health products"
                   inputProps={{ "aria-label": "search medicines" }}
                 />
-                <IconButton
+                <Button
                   type="submit"
-                  sx={{ p: "10px", color: primaryColor }}
+                  sx={{
+                    p: "10px",
+                    color: "#FFFFFF",
+                    backgroundColor: accentColor,
+                    "&:hover": { backgroundColor: "#0B5D5A" },
+                  }}
                   aria-label="search"
                 >
                   <Search />
-                </IconButton>
+                </Button>
               </Paper>
             </Box>
           )}
@@ -271,21 +278,43 @@ const PharmaStoreHeader: React.FC = () => {
         {isMobile && (
           <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
             <Box
+              sx={{
+                width: "auto",
+                height: "5vh",
+                bgcolor: primaryColor,
+                color: "white",
+                alignContent: "center",
+                pl: 3,
+              }}
+            >
+              Login / SignUp
+            </Box>
+            <Box
               sx={{ width: 250 }}
               role="presentation"
-              onClick={toggleDrawer(false)}
-              onKeyDown={toggleDrawer(false)}
+              onClick={() => toggleDrawer(false)}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  toggleDrawer(false)();
+                }
+              }}
             >
               <List>
                 {menuItems.map((item, index) => (
                   <React.Fragment key={index}>
                     <ListItem disablePadding>
-                      <ListItemButton>
+                      <ListItemButton onClick={() => handleToggle(index)}>
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
+                        {item.submenu &&
+                          (expandedIndex === index ? (
+                            <KeyboardArrowUp />
+                          ) : (
+                            <KeyboardArrowDown />
+                          ))}
                       </ListItemButton>
                     </ListItem>
-                    {item.submenu && (
+                    {item.submenu && expandedIndex === index && (
                       <List>
                         {item.submenu.map((subItem, subIndex) => (
                           <ListItem key={subIndex} disablePadding>
@@ -312,7 +341,7 @@ const PharmaStoreHeader: React.FC = () => {
             }}
           >
             {menuItems.map((item, index) => (
-              <Typography
+              <Box
                 key={index}
                 onClick={handleClick}
                 sx={{
@@ -328,7 +357,7 @@ const PharmaStoreHeader: React.FC = () => {
                   item={item}
                   handleClose={handleClose}
                 />
-              </Typography>
+              </Box>
             ))}
           </Toolbar>
         )}
@@ -350,40 +379,42 @@ const PharmaStoreHeader: React.FC = () => {
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={6}>
               <Typography variant="h2" sx={{ mb: 2, fontWeight: "bold" }}>
-                Welcome to MediMart
+                {/* Welcome to MediMart */}
               </Typography>
               <Typography variant="h6" sx={{ mb: 4 }}>
                 Your one-stop shop for all your healthcare needs
               </Typography>
-          {isMobile&&(    <Paper
-                component="form"
-                sx={{
-                  p: "2px 4px",
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
-                  mb: 2,
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                }}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search for medicines and health products"
-                  inputProps={{ "aria-label": "search medicines" }}
-                />
-                <Button
-                  type="submit"
+              {isMobile && (
+                <Paper
+                  component="form"
                   sx={{
-                    p: "10px",
-                    color: "#FFFFFF",
-                    backgroundColor: accentColor,
-                    "&:hover": { backgroundColor: "#0B5D5A" },
+                    p: "2px 4px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    mb: 2,
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                   }}
-                  aria-label="search"
                 >
-                  Search
-                </Button>
-              </Paper>)}
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Search for medicines and health products"
+                    inputProps={{ "aria-label": "search medicines" }}
+                  />
+                  <Button
+                    type="submit"
+                    sx={{
+                      p: "10px",
+                      color: "#FFFFFF",
+                      backgroundColor: accentColor,
+                      "&:hover": { backgroundColor: "#0B5D5A" },
+                    }}
+                    aria-label="search"
+                  >
+                    Search
+                  </Button>
+                </Paper>
+              )}
               <Button
                 variant="contained"
                 sx={{
@@ -816,3 +847,18 @@ const PharmaStoreHeader: React.FC = () => {
 };
 
 export default PharmaStoreHeader;
+
+// import Footer from "@/components/footer/footer";
+// import PharmaStoreHeader from "@/components/header/header";
+// import React from "react";
+
+// const page = () => {
+//   return (
+//     <>
+//       <PharmaStoreHeader />
+//       <Footer />
+//     </>
+//   );
+// };
+
+// export default page;
