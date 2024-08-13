@@ -14,6 +14,8 @@ import {
   ListItemIcon,
   ListItemText,
   Fade,
+  Grid,
+  Container,
   Paper,
   useTheme,
   useMediaQuery,
@@ -22,6 +24,7 @@ import {
   ListItem,
   ListItemButton,
 } from "@mui/material";
+
 import {
   ShoppingCart,
   AccountCircle,
@@ -32,16 +35,18 @@ import {
   LocalOffer,
   Apple,
   Android,
+  KeyboardArrowUp,
+  KeyboardArrowDown,
 } from "@mui/icons-material";
 import MedicationIcon from "@mui/icons-material/Medication";
 
 const primaryColor = "#10847E";
 const secondaryColor = "#E6F3F2";
-
+const accentColor = "#14A098";
 
 interface SubMenuItem {
   label: string;
-  submenu?: string[];
+  icon?: React.ReactNode;
 }
 
 interface MenuItemType {
@@ -57,15 +62,15 @@ const menuItems: MenuItemType[] = [
     submenu: [
       {
         label: "Prescription Drugs",
-        submenu: ["Antibiotics", "Antidepressants", "Pain Relievers"],
+        icon: <MedicationIcon />,
       },
       {
-        label: "Over-the-Counter",
-        submenu: ["Cold & Flu", "Digestive Health", "First Aid"],
+        label: "Prescription Drugs",
+        icon: <MedicationIcon />,
       },
       {
-        label: "Vitamins & Supplements",
-        submenu: ["Multivitamins", "Minerals", "Herbal Supplements"],
+        label: "Prescription Drugs",
+        icon: <MedicationIcon />,
       },
     ],
   },
@@ -111,10 +116,34 @@ const NestedMenuItem: React.FC<NestedMenuItemProps> = ({
           TransitionComponent={Fade}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           transformOrigin={{ vertical: "top", horizontal: "left" }}
+          PaperProps={{
+            elevation: 3,
+            sx: {
+              borderRadius: 2,
+              minWidth: 180,
+              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
+            },
+          }}
         >
           {item.submenu.map((subItem, index) => (
-            <MenuItem key={index} onClick={handleClose}>
-              <ListItemText primary={subItem.label} />
+            <MenuItem
+              key={index}
+              onClick={handleClose}
+              sx={{
+                padding: "10px 20px",
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
+              <ListItemIcon>{subItem.icon}</ListItemIcon>
+              <ListItemText
+                primary={subItem.label}
+                primaryTypographyProps={{
+                  variant: "body2",
+                  sx: { fontWeight: 500 },
+                }}
+              />
             </MenuItem>
           ))}
         </Menu>
@@ -127,6 +156,7 @@ const PharmaStoreHeader: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
+  const [expandedIndex, setExpandedIndex] = useState(null);
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -140,7 +170,9 @@ const PharmaStoreHeader: React.FC = () => {
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
-
+  const handleToggle = (index: any) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
   return (
     <>
       <AppBar
@@ -225,13 +257,18 @@ const PharmaStoreHeader: React.FC = () => {
                   placeholder="Search for medicines and health products"
                   inputProps={{ "aria-label": "search medicines" }}
                 />
-                <IconButton
+                <Button
                   type="submit"
-                  sx={{ p: "10px", color: primaryColor }}
+                  sx={{
+                    p: "10px",
+                    color: "#FFFFFF",
+                    backgroundColor: accentColor,
+                    "&:hover": { backgroundColor: "#0B5D5A" },
+                  }}
                   aria-label="search"
                 >
                   <Search />
-                </IconButton>
+                </Button>
               </Paper>
             </Box>
           )}
@@ -256,25 +293,51 @@ const PharmaStoreHeader: React.FC = () => {
         {isMobile && (
           <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
             <Box
+              sx={{
+                width: "auto",
+                height: "5vh",
+                bgcolor: primaryColor,
+                color: "white",
+                alignContent: "center",
+                pl: 3,
+              }}
+            >
+              Login / SignUp
+            </Box>
+            <Box
               sx={{ width: 250 }}
               role="presentation"
-              onClick={toggleDrawer(false)}
-              onKeyDown={toggleDrawer(false)}
+              onClick={() => toggleDrawer(false)}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  toggleDrawer(false)();
+                }
+              }}
             >
               <List>
                 {menuItems.map((item, index) => (
                   <React.Fragment key={index}>
                     <ListItem disablePadding>
-                      <ListItemButton>
+                      <ListItemButton onClick={() => handleToggle(index)}>
                         <ListItemIcon>{item.icon}</ListItemIcon>
                         <ListItemText primary={item.label} />
+                        {item.submenu &&
+                          (expandedIndex === index ? (
+                            <KeyboardArrowUp />
+                          ) : (
+                            <KeyboardArrowDown />
+                          ))}
                       </ListItemButton>
                     </ListItem>
-                    {item.submenu && (
+                    {item.submenu && expandedIndex === index && (
                       <List>
                         {item.submenu.map((subItem, subIndex) => (
                           <ListItem key={subIndex} disablePadding>
                             <ListItemButton>
+                              <ListItemText
+                                sx={{ ml: 2 }}
+                                primary={subItem.icon}
+                              />
                               <ListItemText primary={subItem.label} />
                             </ListItemButton>
                           </ListItem>
@@ -287,6 +350,7 @@ const PharmaStoreHeader: React.FC = () => {
             </Box>
           </Drawer>
         )}
+
         {!isMobile && (
           <Toolbar
             sx={{
@@ -317,6 +381,89 @@ const PharmaStoreHeader: React.FC = () => {
           </Toolbar>
         )}
       </AppBar>
+
+      {/* Hero Section */}
+      <Box
+        sx={{
+          backgroundColor: primaryColor,
+          color: "white",
+          py: 8,
+          px: 4,
+          backgroundImage: "linear-gradient(45deg, #10847E 30%, #14A098 90%)",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <Typography variant="h2" sx={{ mb: 2, fontWeight: "bold" }}>
+                Welcome to MediMart
+              </Typography>
+              <Typography variant="h6" sx={{ mb: 4 }}>
+                Your one-stop shop for all your healthcare needs
+              </Typography>
+              {isMobile && (
+                <Paper
+                  component="form"
+                  sx={{
+                    p: "2px 4px",
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    mb: 2,
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  }}
+                >
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Search for medicines and health products"
+                    inputProps={{ "aria-label": "search medicines" }}
+                  />
+                  <Button
+                    type="submit"
+                    sx={{
+                      p: "10px",
+                      color: "#FFFFFF",
+                      backgroundColor: accentColor,
+                      "&:hover": { backgroundColor: "#0B5D5A" },
+                    }}
+                    aria-label="search"
+                  >
+                    Search
+                  </Button>
+                </Paper>
+              )}
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: accentColor,
+                  color: "#FFFFFF",
+                  borderRadius: "20px",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  "&:hover": { backgroundColor: "#0B5D5A" },
+                }}
+                startIcon={<ShoppingCart />}
+              >
+                Shop Now
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box
+                component="img"
+                sx={{
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                }}
+                alt="Healthcare"
+                src="https://source.unsplash.com/random/800x600?healthcare"
+              />
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
     </>
   );
 };

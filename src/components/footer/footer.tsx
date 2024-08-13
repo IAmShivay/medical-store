@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, MouseEvent } from "react";
+import React from "react";
 import {
   Typography,
   IconButton,
