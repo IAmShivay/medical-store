@@ -55,7 +55,7 @@ const cardBackgroundColor = "#F0F8F7";
 
 interface SubMenuItem {
   label: string;
-  submenu?: string[];
+  icon?: React.ReactNode;
 }
 
 interface MenuItemType {
@@ -71,15 +71,15 @@ const menuItems: MenuItemType[] = [
     submenu: [
       {
         label: "Prescription Drugs",
-        submenu: ["Antibiotics", "Antidepressants", "Pain Relievers"],
+        icon: <MedicationIcon />,
       },
       {
         label: "Over-the-Counter",
-        submenu: ["Cold & Flu", "Digestive Health", "First Aid"],
+        icon: <MedicationIcon />,
       },
       {
         label: "Vitamins & Supplements",
-        submenu: ["Multivitamins", "Minerals", "Herbal Supplements"],
+        icon: <MedicationIcon />,
       },
     ],
   },
@@ -125,10 +125,34 @@ const NestedMenuItem: React.FC<NestedMenuItemProps> = ({
           TransitionComponent={Fade}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           transformOrigin={{ vertical: "top", horizontal: "left" }}
+          PaperProps={{
+            elevation: 3,
+            sx: {
+              borderRadius: 2,
+              minWidth: 180,
+              boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.1)",
+            },
+          }}
         >
           {item.submenu.map((subItem, index) => (
-            <MenuItem key={index} onClick={handleClose}>
-              <ListItemText primary={subItem.label} />
+            <MenuItem
+              key={index}
+              onClick={handleClose}
+              sx={{
+                padding: "10px 20px",
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
+              <ListItemIcon>{subItem.icon}</ListItemIcon>
+              <ListItemText
+                primary={subItem.label}
+                primaryTypographyProps={{
+                  variant: "body2",
+                  sx: { fontWeight: 500 },
+                }}
+              />
             </MenuItem>
           ))}
         </Menu>
@@ -319,6 +343,10 @@ const PharmaStoreHeader: React.FC = () => {
                         {item.submenu.map((subItem, subIndex) => (
                           <ListItem key={subIndex} disablePadding>
                             <ListItemButton>
+                              <ListItemText
+                                sx={{ ml: 2 }}
+                                primary={subItem.icon}
+                              />
                               <ListItemText primary={subItem.label} />
                             </ListItemButton>
                           </ListItem>
