@@ -74,11 +74,11 @@ const menuItems: MenuItemType[] = [
         icon: <MedicationIcon />,
       },
       {
-        label: "Over-the-Counter",
+        label: "Prescription Drugs",
         icon: <MedicationIcon />,
       },
       {
-        label: "Vitamins & Supplements",
+        label: "Prescription Drugs",
         icon: <MedicationIcon />,
       },
     ],
