@@ -10,12 +10,12 @@ import {
   Grid,
   Container,
 } from "@mui/material";
-
+import VerifiedIcon from '@mui/icons-material/Verified';
 const primaryColor = "#10847E";
 const secondaryColor = "#E6F3F2";
 const cardBackgroundColor = "#F0F8F7";
 
-const bestSeller = () => {
+const BestSeller = () => {
   return (
     <Box sx={{ py: 8, px: 4, backgroundColor: secondaryColor }}>
       <Container maxWidth="lg">
@@ -23,7 +23,12 @@ const bestSeller = () => {
           variant="h4"
           sx={{ mb: 4, fontWeight: "bold", color: primaryColor }}
         >
-          Bestsellers
+          <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
+            <VerifiedIcon
+              sx={{ fontSize: "inherit", color: primaryColor ,mr: 1}}
+            />
+            Bestsellers
+          </Box>
         </Typography>
         <Grid container spacing={3}>
           {["Bestseller 1", "Bestseller 2", "Bestseller 3", "Bestseller 4"].map(
@@ -93,4 +98,4 @@ const bestSeller = () => {
   );
 };
 
-export default bestSeller;
+export default BestSeller;

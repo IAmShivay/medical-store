@@ -14,8 +14,6 @@ import {
   ListItemIcon,
   ListItemText,
   Fade,
-  Grid,
-  Container,
   Paper,
   useTheme,
   useMediaQuery,
@@ -38,11 +36,8 @@ import {
   KeyboardArrowUp,
   KeyboardArrowDown,
 } from "@mui/icons-material";
-import MedicationIcon from "@mui/icons-material/Medication";
 
-const primaryColor = "#10847E";
-const secondaryColor = "#E6F3F2";
-const accentColor = "#14A098";
+import MedicationIcon from "@mui/icons-material/Medication";
 
 interface SubMenuItem {
   label: string;
@@ -182,7 +177,7 @@ const PharmaStoreHeader: React.FC = () => {
           boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
         }}
       >
-        <Box sx={{ backgroundColor: primaryColor, color: "white", py: 0.5 }}>
+        <Box sx={{ backgroundColor: "primary.main", color: "white", py: 0.5 }}>
           <Toolbar
             variant="dense"
             sx={{ justifyContent: "space-between", alignItems: "center" }}
@@ -196,12 +191,12 @@ const PharmaStoreHeader: React.FC = () => {
                 size="small"
                 sx={{
                   backgroundColor: "#FFFFFF",
-                  color: primaryColor,
+                  color: "primary.main",
                   borderRadius: "20px",
                   boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                   "&:hover": { backgroundColor: "#F0F0F0" },
                 }}
-                startIcon={<Apple sx={{ color: primaryColor }} />}
+                startIcon={<Apple sx={{ color: "primary.main" }} />}
               >
                 iOS
               </Button>
@@ -210,13 +205,13 @@ const PharmaStoreHeader: React.FC = () => {
                 size="small"
                 sx={{
                   backgroundColor: "#FFFFFF",
-                  color: primaryColor,
+                  color: "primary.main",
                   borderRadius: "20px",
                   boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                   ml: 2,
                   "&:hover": { backgroundColor: "#F0F0F0" },
                 }}
-                startIcon={<Android sx={{ color: primaryColor }} />}
+                startIcon={<Android sx={{ color: "primary.main" }} />}
               >
                 Android
               </Button>
@@ -233,10 +228,10 @@ const PharmaStoreHeader: React.FC = () => {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <MedicationIcon sx={{ fontSize: 40, color: primaryColor }} />
+            <MedicationIcon sx={{ fontSize: 40, color: "primary.main" }} />
             <Typography
               variant="h5"
-              sx={{ ml: 1, color: primaryColor, fontWeight: "bold" }}
+              sx={{ ml: 1, color: "primary.main", fontWeight: "bold" }}
             >
               MediMart
             </Typography>
@@ -253,7 +248,7 @@ const PharmaStoreHeader: React.FC = () => {
                 }}
               >
                 <InputBase
-                  sx={{ flex: 1, mr: 1 }}
+                  sx={{ flex: 1, ml: 1 }}
                   placeholder="Search for medicines and health products"
                   inputProps={{ "aria-label": "search medicines" }}
                 />
@@ -262,7 +257,7 @@ const PharmaStoreHeader: React.FC = () => {
                   sx={{
                     p: "10px",
                     color: "#FFFFFF",
-                    backgroundColor: accentColor,
+                    backgroundColor: "primary.accentColor",
                     "&:hover": { backgroundColor: "#0B5D5A" },
                   }}
                   aria-label="search"
@@ -273,16 +268,16 @@ const PharmaStoreHeader: React.FC = () => {
             </Box>
           )}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton sx={{ color: primaryColor }}>
+            <IconButton sx={{ color: "primary.main" }}>
               <ShoppingCart />
             </IconButton>
-            <IconButton sx={{ color: primaryColor }}>
+            <IconButton sx={{ color: "primary.main" }}>
               <AccountCircle />
             </IconButton>
             {isMobile && (
               <IconButton
                 onClick={toggleDrawer(true)}
-                sx={{ color: primaryColor }}
+                sx={{ color: "primary.main" }}
               >
                 <MenuOpenIcon />
               </IconButton>
@@ -296,7 +291,7 @@ const PharmaStoreHeader: React.FC = () => {
               sx={{
                 width: "auto",
                 height: "5vh",
-                bgcolor: primaryColor,
+                bgcolor: "primary.main",
                 color: "white",
                 alignContent: "center",
                 pl: 3,
@@ -364,11 +359,11 @@ const PharmaStoreHeader: React.FC = () => {
                 key={index}
                 onClick={handleClick}
                 sx={{
-                  color: primaryColor,
+                  color: "primary.main",
                   borderRadius: "20px",
                   mx: 1,
                   whiteSpace: "nowrap",
-                  "&:hover": { backgroundColor: secondaryColor },
+                  "&:hover": { backgroundColor: "secondary.main" },
                 }}
               >
                 <NestedMenuItem
@@ -381,89 +376,6 @@ const PharmaStoreHeader: React.FC = () => {
           </Toolbar>
         )}
       </AppBar>
-
-      {/* Hero Section */}
-      <Box
-        sx={{
-          backgroundColor: primaryColor,
-          color: "white",
-          py: 8,
-          px: 4,
-          backgroundImage: "linear-gradient(45deg, #10847E 30%, #14A098 90%)",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Typography variant="h2" sx={{ mb: 2, fontWeight: "bold" }}>
-                Welcome to MediMart
-              </Typography>
-              <Typography variant="h6" sx={{ mb: 4 }}>
-                Your one-stop shop for all your healthcare needs
-              </Typography>
-              {isMobile && (
-                <Paper
-                  component="form"
-                  sx={{
-                    p: "2px 4px",
-                    display: "flex",
-                    alignItems: "center",
-                    width: "100%",
-                    mb: 2,
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  <InputBase
-                    sx={{ ml: 1, flex: 1 }}
-                    placeholder="Search for medicines and health products"
-                    inputProps={{ "aria-label": "search medicines" }}
-                  />
-                  <Button
-                    type="submit"
-                    sx={{
-                      p: "10px",
-                      color: "#FFFFFF",
-                      backgroundColor: accentColor,
-                      "&:hover": { backgroundColor: "#0B5D5A" },
-                    }}
-                    aria-label="search"
-                  >
-                    Search
-                  </Button>
-                </Paper>
-              )}
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: accentColor,
-                  color: "#FFFFFF",
-                  borderRadius: "20px",
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                  "&:hover": { backgroundColor: "#0B5D5A" },
-                }}
-                startIcon={<ShoppingCart />}
-              >
-                Shop Now
-              </Button>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Box
-                component="img"
-                sx={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                }}
-                alt="Healthcare"
-                src="https://source.unsplash.com/random/800x600?healthcare"
-              />
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
     </>
   );
 };

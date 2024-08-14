@@ -9,19 +9,21 @@ import {
   Grid,
   Container,
 } from "@mui/material";
-
-const primaryColor = "#10847E";
-const cardBackgroundColor = "#F0F8F7";
-
-const blog = () => {
+import UpcomingIcon from "@mui/icons-material/Upcoming";
+const Blog = () => {
   return (
     <Box sx={{ py: 8, px: 4, backgroundColor: "#FFFFFF" }}>
       <Container maxWidth="lg">
         <Typography
           variant="h4"
-          sx={{ mb: 4, fontWeight: "bold", color: primaryColor }}
+          sx={{ mb: 4, fontWeight: "bold", color: "primary.main" }}
         >
-          Latest Blog Posts
+          <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
+            <UpcomingIcon
+              sx={{ fontSize: "inherit", color: "primary.main", mr: 1 }}
+            />
+            Latest Blog Posts
+          </Box>
         </Typography>
         <Grid container spacing={3}>
           {["Blog Post 1", "Blog Post 2", "Blog Post 3"].map((title, index) => (
@@ -33,7 +35,7 @@ const blog = () => {
                   height: 350,
                   boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                   transition: "0.3s",
-                  backgroundColor: cardBackgroundColor,
+                  backgroundColor: "#F0F8F7",
                   "&:hover": {
                     transform: "translateY(-5px)",
                     boxShadow: "0 6px 12px rgba(0,0,0,0.2)",
@@ -59,8 +61,8 @@ const blog = () => {
                   variant="outlined"
                   sx={{
                     m: 2,
-                    color: primaryColor,
-                    borderColor: primaryColor,
+                    color: "primary.main",
+                    borderColor: "primary.main",
                   }}
                 >
                   Read More
@@ -74,4 +76,4 @@ const blog = () => {
   );
 };
 
-export default blog;
+export default Blog;

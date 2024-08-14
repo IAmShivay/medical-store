@@ -1,5 +1,7 @@
 "use client";
+
 import React from "react";
+import Link from "next/link";
 import {
   Typography,
   IconButton,
@@ -40,36 +42,24 @@ const Footer = () => {
               Quick Links
             </Typography>
             <Typography variant="body2" component="p" gutterBottom>
-              <a
-                href="/privacy-policy"
-                style={{ color: "white", textDecoration: "none" }}
-              >
+              <Link href="/privacy-policy" style={{ color: "white", textDecoration: "none" }}>
                 Privacy Policy
-              </a>
+              </Link>
             </Typography>
             <Typography variant="body2" component="p" gutterBottom>
-              <a
-                href="/return-policy"
-                style={{ color: "white", textDecoration: "none" }}
-              >
+              <Link href="/return-policy" style={{ color: "white", textDecoration: "none" }}>
                 Return Policy
-              </a>
+              </Link>
             </Typography>
             <Typography variant="body2" component="p" gutterBottom>
-              <a
-                href="/mission"
-                style={{ color: "white", textDecoration: "none" }}
-              >
+              <Link href="/mission" style={{ color: "white", textDecoration: "none" }}>
                 Our Mission
-              </a>
+              </Link>
             </Typography>
             <Typography variant="body2" component="p">
-              <a
-                href="/values"
-                style={{ color: "white", textDecoration: "none" }}
-              >
+              <Link href="/values" style={{ color: "white", textDecoration: "none" }}>
                 Our Values
-              </a>
+              </Link>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -77,25 +67,19 @@ const Footer = () => {
               Customer Service
             </Typography>
             <Typography variant="body2" component="p" gutterBottom>
-              <a href="/faq" style={{ color: "white", textDecoration: "none" }}>
+              <Link href="/faq" style={{ color: "white", textDecoration: "none" }}>
                 FAQ
-              </a>
+              </Link>
             </Typography>
             <Typography variant="body2" component="p" gutterBottom>
-              <a
-                href="/shipping"
-                style={{ color: "white", textDecoration: "none" }}
-              >
+              <Link href="/shipping" style={{ color: "white", textDecoration: "none" }}>
                 Shipping Information
-              </a>
+              </Link>
             </Typography>
             <Typography variant="body2" component="p">
-              <a
-                href="/contact"
-                style={{ color: "white", textDecoration: "none" }}
-              >
+              <Link href="/contact" style={{ color: "white", textDecoration: "none" }}>
                 Contact Us
-              </a>
+              </Link>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -151,8 +135,6 @@ const Footer = () => {
         <Typography variant="body2" align="center">
           © {new Date().getFullYear()} MediMart. All rights reserved.
         </Typography>
-        {/* <CartPage/>
-          <ProductViewPage/> */}
       </Container>
     </Box>
   );
